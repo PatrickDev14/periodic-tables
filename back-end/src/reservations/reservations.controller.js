@@ -15,6 +15,7 @@ const REQUIRED_PROPERTIES = [
 const timeFormat = /[0-9]{2}:[0-9]{2}/;
 
 // ---- VALIDATION MIDDLEWARE ---- //
+
 const hasRequiredProperties = hasProperties(REQUIRED_PROPERTIES);
 
 function hasValidDate(req, res, next) {
@@ -54,19 +55,16 @@ function hasValidPeople(req, res, next) {
 
 // ---- CRUD FUNCTIONS ---- //
 
-// CREATE HANDLER FOR RESERVATIONS
+// CREATE HANDLER FOR NEW RESERVATIONS
 async function create(req, res) {
   const reservation = await service.create(req.body.data);
   res.status(201).json({ data: reservation });
 }
 
-/**
- * List handler for reservation resources
- */
+// LIST HANDLER FOR RESERVATION RESOURCES
 async function list(req, res) {
-  res.json({
-    data: [],
-  });
+  const { date } = req.query;
+  res.json({ data: await service.listByDate(date) });
 }
 
 module.exports = {
@@ -77,5 +75,5 @@ module.exports = {
     hasValidPeople,
     asyncErrorBoundary(create),
   ],
-  list,
+  list: asyncErrorBoundary(list),
 };
