@@ -49,6 +49,8 @@ function ReservationForm({ formData, handleChange, handleSubmit }) {
           className="form-control"
           name="reservation_date" 
           id="reservation_date"
+          placeholder="YYYY-MM-DD"
+          pattern="\d{4}-\d{2}-\d{2}"
           value={formData.reservation_date}
           onChange={handleChange}
           required
@@ -61,6 +63,8 @@ function ReservationForm({ formData, handleChange, handleSubmit }) {
           className="form-control"
           name="reservation_time" 
           id="reservation_time"
+          placeholder="HH:MM"
+          pattern="[0-9]{2}:[0-9]{2}"
           value={formData.reservation_time}
           onChange={handleChange}
           required
@@ -85,7 +89,7 @@ function ReservationForm({ formData, handleChange, handleSubmit }) {
         submit
       </button>
       <button
-        className="btn btn-secondary btn-lg"
+        className="btn btn-secondary btn-lg ml-3"
         type="button"
         onClick={() => history.go(-1)}
       >

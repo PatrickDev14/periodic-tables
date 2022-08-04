@@ -36,7 +36,7 @@ function NewReservation() {
     reservation.people = Number(reservation.people);
 
     createReservation(reservation)
-      .then(() => history.push(`/dashboard/date?=${reservation.reservation_date}`)) // formData instead?
+      .then(() => history.push(`/dashboard?date=${formData.reservation_date}`)) // formData instead?
       .catch(setError);    
   };
 
