@@ -33,6 +33,8 @@ function NewReservation() {
     const reservation = {
       ...formData
     };
+    reservation.people = Number(reservation.people);
+
     createReservation(reservation)
       .then(() => history.push(`/dashboard/date?=${reservation.reservation_date}`)) // formData instead?
       .catch(setError);    
@@ -42,7 +44,7 @@ function NewReservation() {
     <div>
       <ErrorAlert error={error} />
       <h2 className="d-flex m3 justify-content-center">
-        New Reservation Form
+        Enter a new reservation
       </h2>
       <div>
         <ReservationForm formData={formData} handleChange={handleChange} handleSubmit={handleSubmit} />    
