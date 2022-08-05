@@ -38,7 +38,34 @@ function hasValidTime(req, res, next) {
   next({
     status: 400,
     message: `The entered reservation_time "${time}" is not a valid time.`
-  })
+  });
+}
+
+function noSchedulingInPast(req, res, next) {
+  const { reservation_date, reservation_time } = req.body.data;
+  const requestedDate = new Date(
+    `${reservation_date} ${reservation_time}`
+  ).valueOf();
+  const presentTime = Date.now();
+  if (requestedDate > presentTime) {
+    return next();
+  }
+  next({
+    status: 400,
+    message: `A new reservation must be in the future.`
+  });
+}
+
+function noTuesdayScheduling(req, res, next) {
+  const { reservation_date }  = req.body.data;
+  const weekday = new Date(reservation_date).getUTCDay();
+  if (weekday !== 2) {
+    return next();
+  }
+  next({
+    status: 400,
+    message: `The restaurant is closed on Tuesdays.`
+  });
 }
 
 // the people property must be an integer greater than 0
@@ -50,7 +77,7 @@ function hasValidPeople(req, res, next) {
   next({
     status: 400,
     message: `The entered people "${people}" is not a number greater than 0.`
-  })
+  });
 }
 
 // ---- CRUD FUNCTIONS ---- //
@@ -72,6 +99,8 @@ module.exports = {
     hasRequiredProperties,
     hasValidDate,
     hasValidTime,
+    noSchedulingInPast,
+    noTuesdayScheduling,
     hasValidPeople,
     asyncErrorBoundary(create),
   ],
