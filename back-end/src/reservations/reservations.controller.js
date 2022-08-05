@@ -19,8 +19,8 @@ const timeFormat = /[0-9]{2}:[0-9]{2}/;
 const hasRequiredProperties = hasProperties(REQUIRED_PROPERTIES);
 
 function hasValidDate(req, res, next) {
-  const date = req.body.data.reservation_date;
-  const valid = Date.parse(date);
+  const { reservation_date }  = req.body.data;
+  const valid = Date.parse(reservation_date);
   if (valid) {
     return next();
   }
@@ -52,7 +52,7 @@ function noSchedulingInPast(req, res, next) {
   }
   next({
     status: 400,
-    message: `A new reservation must be in the future.`
+    message: `A new reservation must be later today, or on a future date.`
   });
 }
 
@@ -64,7 +64,18 @@ function noTuesdayScheduling(req, res, next) {
   }
   next({
     status: 400,
-    message: `The restaurant is closed on Tuesdays.`
+    message: `The restaurant is closed on Tuesdays. Please choose another date.`
+  });
+}
+
+function isDuringBusinessHours(req, res, next) {
+  const { reservation_time } = req.body.data;
+  if (reservation_time >= "10:30" && reservation_time <= "21:30") {
+    return next();
+  }
+  next({
+    status: 400,
+    message: `Reservations can only be made from 10:30AM - 9:30PM.`
   });
 }
 
@@ -101,6 +112,7 @@ module.exports = {
     hasValidTime,
     noSchedulingInPast,
     noTuesdayScheduling,
+    isDuringBusinessHours,
     hasValidPeople,
     asyncErrorBoundary(create),
   ],
