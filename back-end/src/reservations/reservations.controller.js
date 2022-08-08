@@ -1,6 +1,7 @@
 const service = require("./reservations.service");
 const hasProperties = require("../errors/hasProperties");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
+const { as } = require("../db/connection");
 
 // ---- validating properties ---- //
 const REQUIRED_PROPERTIES = [
@@ -99,6 +100,11 @@ async function create(req, res) {
   res.status(201).json({ data: reservation });
 }
 
+async function read(req, res) {
+  const { reservation_id } = req.params;
+  res.json({ data: await service.read(reservation_id)});
+}
+ 
 // LIST HANDLER FOR RESERVATION RESOURCES
 async function list(req, res) {
   const { date } = req.query;
@@ -115,6 +121,9 @@ module.exports = {
     isDuringBusinessHours,
     hasValidPeople,
     asyncErrorBoundary(create),
+  ],
+  read: [
+    asyncErrorBoundary(read),
   ],
   list: asyncErrorBoundary(list),
 };
