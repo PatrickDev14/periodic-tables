@@ -19,6 +19,19 @@ const timeFormat = /[0-9]{2}:[0-9]{2}/;
 
 const hasRequiredProperties = hasProperties(REQUIRED_PROPERTIES);
 
+async function reservationExists(req, res, next) {
+  const { reservation_id } = req.params;
+  const reservation = await service.read(reservation_id);
+  if (reservation) {
+    res.locals.reservation = reservation;
+    return next();
+  }
+  next({
+    status: 400,
+    message: `The reservation "${reservation_id}" cannot be found.`,
+  });
+}
+
 function hasValidDate(req, res, next) {
   const { reservation_date }  = req.body.data;
   const valid = Date.parse(reservation_date);
@@ -100,9 +113,8 @@ async function create(req, res) {
   res.status(201).json({ data: reservation });
 }
 
-async function read(req, res) {
-  const { reservation_id } = req.params;
-  res.json({ data: await service.read(reservation_id)});
+async function read(req, res) {  
+  res.json({ data: res.locals.reservation });
 }
  
 // LIST HANDLER FOR RESERVATION RESOURCES
@@ -123,7 +135,8 @@ module.exports = {
     asyncErrorBoundary(create),
   ],
   read: [
-    asyncErrorBoundary(read),
+    asyncErrorBoundary(reservationExists),
+    read,
   ],
   list: asyncErrorBoundary(list),
 };

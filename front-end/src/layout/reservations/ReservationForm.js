@@ -13,6 +13,7 @@ function ReservationForm({ formData, handleChange, handleSubmit }) {
           className="form-control"
           name="first_name" 
           id="first_name"
+          style={{ width: "50%" }}
           value={formData.first_name}
           onChange={handleChange}
           required
@@ -25,6 +26,7 @@ function ReservationForm({ formData, handleChange, handleSubmit }) {
           className="form-control"
           name="last_name" 
           id="last_name"
+          style={{ width: "50%" }}
           value={formData.last_name}
           onChange={handleChange}
           required
@@ -37,6 +39,7 @@ function ReservationForm({ formData, handleChange, handleSubmit }) {
           className="form-control"
           name="mobile_number" 
           id="mobile_number"
+          style={{ width: "50%" }}
           value={formData.mobile_number}
           onChange={handleChange}
           required
@@ -49,6 +52,7 @@ function ReservationForm({ formData, handleChange, handleSubmit }) {
           className="form-control"
           name="reservation_date" 
           id="reservation_date"
+          style={{ width: "50%" }}
           placeholder="YYYY-MM-DD"
           pattern="\d{4}-\d{2}-\d{2}"
           value={formData.reservation_date}
@@ -63,6 +67,7 @@ function ReservationForm({ formData, handleChange, handleSubmit }) {
           className="form-control"
           name="reservation_time" 
           id="reservation_time"
+          style={{ width: "50%" }}
           placeholder="HH:MM"
           pattern="[0-9]{2}:[0-9]{2}"
           value={formData.reservation_time}
@@ -71,12 +76,13 @@ function ReservationForm({ formData, handleChange, handleSubmit }) {
         />
       </div>
       <div className="form-group mb-3">
-        <label htmlFor="people" className="form-label">Party size</label>
+        <label htmlFor="people" className="form-label">Party size (choose 1 or more)</label>
         <input 
           type="number"
           className="form-control"
           name="people" 
           id="people"
+          style={{ width: "50%" }}
           value={formData.people}
           onChange={handleChange}
           required
