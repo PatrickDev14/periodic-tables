@@ -5,6 +5,7 @@ import Dashboard from "../dashboard/Dashboard";
 import NotFound from "./NotFound";
 import NewReservation from "./reservations/NewReservation";
 import NewTable from "./tables/NewTable";
+import ChooseTable from "./tables/ChooseTable";
 import { today } from "../utils/date-time";
 
 /**
@@ -26,6 +27,9 @@ function Routes() {
       </Route>
       <Route exact path="/reservations/new">
         <NewReservation />
+      </Route>
+      <Route path="/reservations/:reservation_id/seat">
+        <ChooseTable />
       </Route>
 
       <Route path="/tables/new">

@@ -13,8 +13,14 @@ function DisplayReservations({ reservation }) {
         <p className="card-text">{formatAsDate(reservation.reservation_date)}</p>
         <p className="card-text">{reservation.mobile_number}</p>
         <p className="card-text">Party of {reservation.people}</p>
-        {/* <a href="#" className="card-link">Card link</a>
-        <a href="#" className="card-link">Another link</a> */}
+        <div className="row">
+          { reservation.status === "booked" &&
+            <button className="btn btn-success mr-3">
+              <a href={`/reservations/${reservation.reservation_id}/seat`}>
+                Seat
+              </a>
+            </button>}
+        </div>
       </div>
     </div>
   );
