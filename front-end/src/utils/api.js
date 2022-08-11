@@ -52,26 +52,10 @@ async function fetchJson(url, options, onCancel) {
   }
 }
 
-/**
- * Retrieves all existing reservation.
- * @returns {Promise<[reservation]>}
- *  a promise that resolves to a possibly empty array of reservation saved in the database.
- */
+// ---- RESERVATIONS ---- //
 
-export async function listReservations(params, signal) {
-  const url = new URL(`${API_BASE_URL}/reservations`);
-  Object.entries(params).forEach(([key, value]) =>
-    url.searchParams.append(key, value.toString())
-  );
-  return await fetchJson(url, { headers, signal }, [])
-    .then(formatReservationDate)
-    .then(formatReservationTime);
-}
-
-
-
-/**
- * Saves reservation to the database (src/db).
+/** POST a new reservation to the database
+ * 
  * There is no validation done on the reservation object, any object will be saved.
  * @param reservation
  *  the reservation to save, which must not have an `id` property
@@ -89,4 +73,56 @@ export async function listReservations(params, signal) {
   signal,
   };
   return await fetchJson(url, options, {});
+}
+
+/**
+ * Retrieves all existing reservation.
+ * @returns {Promise<[reservation]>}
+ *  a promise that resolves to a possibly empty array of reservation saved in the database.
+ */
+
+export async function listReservations(params, signal) {
+  const url = new URL(`${API_BASE_URL}/reservations`);
+  Object.entries(params).forEach(([key, value]) =>
+    url.searchParams.append(key, value.toString())
+  );
+  return await fetchJson(url, { headers, signal }, [])
+    .then(formatReservationDate)
+    .then(formatReservationTime);
+}
+
+
+// ---- TABLES ---- //
+
+/** POST a new table to the database
+ * 
+ * There is no validation done on the table object, any object will be saved.
+ * @param table
+ *  the table to save, which must not have an `id` property
+ * @param signal
+ *  optional AbortController.signal
+ * @returns {Promise<table>}
+ *  a promise that resolves the saved table, which will now have an `id` property.
+ */
+ export async function createTable(table, signal) {
+  const url = `${API_BASE_URL}/tables`;
+  const options = {
+  method: "POST",
+  headers,
+  body: JSON.stringify({ data: table }),
+  signal,
+  };
+  return await fetchJson(url, options, {});
+}
+
+/** GET Request to retrieve all existing tables.
+ *
+ * @params signal
+ * optional AbortController.signal
+ * @returns {Promise<[table]>}
+ *  a promise that resolves to a possibly empty array of tables saved in the database.
+ */
+export async function listTables(signal) {
+  const url = new URL(`${API_BASE_URL}/tables`);
+  return await fetchJson(url, { headers, signal }, []);
 }

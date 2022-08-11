@@ -1,6 +1,7 @@
 const service = require("./reservations.service");
 const hasProperties = require("../errors/hasProperties");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
+// const { as } = require("../db/connection");
 
 // ---- validating properties ---- //
 const REQUIRED_PROPERTIES = [
@@ -17,6 +18,19 @@ const timeFormat = /[0-9]{2}:[0-9]{2}/;
 // ---- VALIDATION MIDDLEWARE ---- //
 
 const hasRequiredProperties = hasProperties(REQUIRED_PROPERTIES);
+
+async function reservationExists(req, res, next) {
+  const { reservation_id } = req.params;
+  const reservation = await service.read(reservation_id);
+  if (reservation) {
+    res.locals.reservation = reservation;
+    return next();
+  }
+  next({
+    status: 400,
+    message: `The reservation "${reservation_id}" cannot be found.`,
+  });
+}
 
 function hasValidDate(req, res, next) {
   const { reservation_date }  = req.body.data;
@@ -99,6 +113,10 @@ async function create(req, res) {
   res.status(201).json({ data: reservation });
 }
 
+async function read(req, res) {  
+  res.json({ data: res.locals.reservation });
+}
+ 
 // LIST HANDLER FOR RESERVATION RESOURCES
 async function list(req, res) {
   const { date } = req.query;
@@ -115,6 +133,10 @@ module.exports = {
     isDuringBusinessHours,
     hasValidPeople,
     asyncErrorBoundary(create),
+  ],
+  read: [
+    asyncErrorBoundary(reservationExists),
+    read,
   ],
   list: asyncErrorBoundary(list),
 };

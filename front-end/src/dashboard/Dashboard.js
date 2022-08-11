@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { listReservations } from "../utils/api";
+import { listReservations, listTables } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import DisplayReservations from "./DisplayReservations";
+import DisplayTable from "./DisplayTable";
 import useQuery from "../utils/useQuery";
 //
 import { next, previous, today } from "../utils/date-time";
@@ -16,6 +17,8 @@ import { useHistory, useRouteMatch } from "react-router-dom";
 function Dashboard({ date, setDate }) {
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
+  const [tables, setTables] = useState([]);
+  const [tablesError, setTablesError] = useState(null);
   const query = useQuery();
   const route = useRouteMatch();
   const history = useHistory();
@@ -38,9 +41,15 @@ function Dashboard({ date, setDate }) {
   function loadDashboard() {
     const abortController = new AbortController();
     setReservationsError(null);
+    setTablesError(null);
     listReservations({ date }, abortController.signal)
       .then(setReservations)
       .catch(setReservationsError);
+
+    listTables(abortController.signal)
+      .then(setTables)
+      .catch(setTablesError);
+
     return () => abortController.abort();
   }
 
@@ -69,6 +78,8 @@ function Dashboard({ date, setDate }) {
       </div>
 
       <ErrorAlert error={reservationsError} />
+      <ErrorAlert error={tablesError} />
+
 
       <div className="container">
         <div className="d-md-flex mb-3">
@@ -77,13 +88,26 @@ function Dashboard({ date, setDate }) {
         <div className="row">
           {reservations &&
             reservations.map((reservation) => (
-              <div className="col-md-6 mb-3" key={reservation.reservation_id}>
+              <div className="col-md-4 mb-3" key={reservation.reservation_id}>
                 <DisplayReservations reservation={reservation} />
               </div>
             ))}
         </div>
-      </div>      
+      </div>
       {/* {JSON.stringify(reservations)} */}
+      <div className="container">
+        <div className="d-md-flex mb-3">
+          <h4 className="mb-0">Tables:</h4>
+        </div>
+        <div className="row">
+          {tables &&
+            tables.map((table) => (
+              <div className="col-md-4 mb-3" key={table.table_id}>
+                <DisplayTable table={table} />
+              </div>
+            ))}
+        </div>
+      </div>
     </main>
   );
 }
