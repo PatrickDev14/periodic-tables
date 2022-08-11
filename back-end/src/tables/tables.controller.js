@@ -24,12 +24,12 @@ async function tableExists(req, res, next) {
   }
   next({
     status: 404,
-    message: `The table "${table_id}" cannot be found.`,
+    message: `The table ${table_id} cannot be found.`,
   });
 }
 
 async function reservationExists(req, res, next) {
-  const { reservation_id } = req.params;
+  const { reservation_id } = req.body.data;
   const reservation = await reservationsService.read(reservation_id);
 
   if (reservation) {
@@ -39,6 +39,17 @@ async function reservationExists(req, res, next) {
   next({
     status: 404,
     message: `The reservation "${reservation_id}" cannot be found.`,
+  });
+}
+
+function tableIsEmpty(req, res, next) {
+  const { reservation_id } = res.locals.table;
+  if (!reservation_id) {
+    return next();
+  }
+  next({
+    status: 400,
+    message: `The table is already occupied. Please choose another table.`
   });
 }
 
@@ -114,6 +125,7 @@ module.exports = {
     hasRequiredPropertiesToUpdate,
     asyncErrorBoundary(tableExists),
     asyncErrorBoundary(reservationExists),
+    tableIsEmpty,
     hasSufficientSeats,
     asyncErrorBoundary(updateReservationSeating),
   ],
