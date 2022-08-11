@@ -76,6 +76,22 @@ async function fetchJson(url, options, onCancel) {
 }
 
 /**
+ * Retrieves the reservation with the specified `reservation_id`
+ * @param reservation_id
+ *  the `id` property matching the desired reservation
+ * @param signal
+ *  optional AbortController.signal
+ * @returns {Promise<any>}
+ *  a promise that resolves to the saved reservation
+ */
+ export async function readReservation(reservation_id, signal) {
+  const url = `${API_BASE_URL}/reservations/${reservation_id}`;
+  return await fetchJson(url, { signal }, {})
+    .then(formatReservationDate)
+    .then(formatReservationTime);
+}
+
+/**
  * Retrieves all existing reservation.
  * @returns {Promise<[reservation]>}
  *  a promise that resolves to a possibly empty array of reservation saved in the database.
@@ -113,6 +129,28 @@ export async function listReservations(params, signal) {
   signal,
   };
   return await fetchJson(url, options, {});
+}
+
+/**
+ * PUT an update to an existing table
+ * @param table_id
+ *  the id of the chosen table to update
+ * @param reservation_id
+ *  the id of the reservation to be seated
+ * @param signal
+ *  optional AbortController.signal
+ * @returns {Promise<Error|*>}
+ *  a promise that resolves to the updated table
+ */
+export async function updateTable(table_id, reservation_id, signal) {
+  const url = `${API_BASE_URL}/tables/${table_id}/seat`;
+  const options = {
+  method: "PUT",
+  headers,
+  body: JSON.stringify({ data: { reservation_id } }),
+  signal,
+  };
+  return await fetchJson(url, options);
 }
 
 /** GET Request to retrieve all existing tables.
