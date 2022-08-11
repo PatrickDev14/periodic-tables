@@ -1,7 +1,7 @@
 const service = require("./reservations.service");
 const hasProperties = require("../errors/hasProperties");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
-const { as } = require("../db/connection");
+// const { as } = require("../db/connection");
 
 // ---- validating properties ---- //
 const REQUIRED_PROPERTIES = [

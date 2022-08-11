@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { listReservations, listTables } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import DisplayReservations from "./DisplayReservations";
-import DisplayTables from "./DisplayTables";
+import DisplayTable from "./DisplayTable";
 import useQuery from "../utils/useQuery";
 //
 import { next, previous, today } from "../utils/date-time";
@@ -103,7 +103,7 @@ function Dashboard({ date, setDate }) {
           {tables &&
             tables.map((table) => (
               <div className="col-md-4 mb-3" key={table.table_id}>
-                <DisplayTables table={table} />
+                <DisplayTable table={table} />
               </div>
             ))}
         </div>
