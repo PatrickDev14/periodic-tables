@@ -27,7 +27,7 @@ async function reservationExists(req, res, next) {
     return next();
   }
   next({
-    status: 400,
+    status: 404,
     message: `The reservation "${reservation_id}" cannot be found.`,
   });
 }
@@ -40,7 +40,7 @@ function hasValidDate(req, res, next) {
   }
   next({
     status: 400,
-    message: `The entered reservation_date "${date}" is not a valid date.`,
+    message: `The entered reservation_date "${reservation_date}" is not a valid date.`,
   });
 }
 
