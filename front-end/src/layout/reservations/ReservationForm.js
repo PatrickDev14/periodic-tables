@@ -89,7 +89,7 @@ function ReservationForm({ formData, handleChange, handleSubmit }) {
         />
       </div>
       <button
-        className="btn btn-primary btn-lg ml-3"
+        className="btn btn-success btn-lg ml-3"
         type="submit"
       >
         submit

@@ -132,7 +132,7 @@ export async function listReservations(params, signal) {
 }
 
 /**
- * PUT an update to an existing table
+ * PUT an update to an existing table, seating a reservation
  * @param table_id
  *  the id of the chosen table to update
  * @param reservation_id

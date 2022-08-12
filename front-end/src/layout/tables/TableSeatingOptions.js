@@ -3,7 +3,7 @@ import React from "react";
 function TableSeatingOptions({ tables, reservation }) {
 
   return tables.map((table) => {
-    const isOccupiedOrTooSmall = table.reservation_id || (Number(table.capacity) < Number(reservation.people));
+    const isOccupiedOrTooSmall = (Number(table.capacity) < Number(reservation.people));
 
     return (
       <option 
