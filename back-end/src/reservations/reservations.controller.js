@@ -17,7 +17,8 @@ const timeFormat = /[0-9]{2}:[0-9]{2}/;
 
 // ---- VALIDATION MIDDLEWARE ---- //
 
-const hasRequiredProperties = hasProperties(REQUIRED_PROPERTIES);
+const hasRequiredCreateProperties = hasProperties(REQUIRED_PROPERTIES);
+let hasRequiredUpdateProperty;
 
 async function reservationExists(req, res, next) {
   const { reservation_id } = req.params;
@@ -105,6 +106,39 @@ function hasValidPeople(req, res, next) {
   });
 }
 
+function hasValidCreateStatus(req, res, next) {
+  const { status } = req.body.data;
+  if (status === "seated" || status === "finished") {
+    next({
+      status: 400,
+      message: `The initial status cannot be "${status};" it should be "booked".`
+    });
+  }
+  return next();
+}
+
+function currentStatusIsNotFinished(req, res, next) {
+  const { status, reservation_id } = res.locals.reservation;
+  if (status !== "finished") {
+    return next();
+  }
+  next({
+    status: 400,
+    message: `This reservation ${reservation_id} is already finished, and cannot be updated.`
+  });
+}
+
+function statusIsNotUnknown(req, res, next) {
+  const { status } = req.body.data;
+  if (status !== "unknown") {
+    return next();
+  }
+  next({
+    status: 400,
+    message: `The status request is unknown.`
+  });
+}
+
 // ---- CRUD FUNCTIONS ---- //
 
 // CREATE HANDLER FOR NEW RESERVATIONS
@@ -116,6 +150,14 @@ async function create(req, res) {
 async function read(req, res) {  
   res.json({ data: res.locals.reservation });
 }
+
+async function updateReservationStatus(req, res) {
+  const { reservation_id } = res.locals.reservation;
+  console.log(req.body.data);
+  const { status } = req.body.data;
+  const updatedReservation = await service.updateStatus(reservation_id, status);
+  res.status(200).json({ data: updatedReservation });
+}
  
 // LIST HANDLER FOR RESERVATION RESOURCES
 async function list(req, res) {
@@ -125,18 +167,25 @@ async function list(req, res) {
 
 module.exports = {
   create: [
-    hasRequiredProperties,
+    hasRequiredCreateProperties,
     hasValidDate,
     hasValidTime,
     noSchedulingInPast,
     noTuesdayScheduling,
     isDuringBusinessHours,
     hasValidPeople,
+    hasValidCreateStatus,
     asyncErrorBoundary(create),
   ],
   read: [
     asyncErrorBoundary(reservationExists),
     read,
+  ],
+  updateReservationStatus: [
+    asyncErrorBoundary(reservationExists),
+    currentStatusIsNotFinished,
+    statusIsNotUnknown,
+    asyncErrorBoundary(updateReservationStatus),
   ],
   list: asyncErrorBoundary(list),
 };

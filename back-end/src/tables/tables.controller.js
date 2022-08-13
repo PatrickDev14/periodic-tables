@@ -42,6 +42,17 @@ async function reservationExists(req, res, next) {
   });
 }
 
+function reservationIsNotAlreadySeated(req, res, next) {
+  const { status, reservation_id } = res.locals.reservation;
+  if (status !== "seated") {
+    return next();
+  }
+  next({
+    status: 400,
+    message: `The reservation "${reservation_id}" is already seated at another table.`,
+  });
+}
+
 function tableIsEmpty(req, res, next) {
   const { reservation_id } = res.locals.table;
   if (!reservation_id) {
@@ -94,7 +105,7 @@ function hasSufficientSeats(req, res, next) {
   }
   next({
     status: 400,
-    message: `The party size of ${people} exceeds the table capacity.`
+    message: `The party size of ${people} exceeds the table capacity of ${capacity}.`
   });
 }
 
@@ -113,13 +124,13 @@ function read(req, res) {
 async function updateReservationSeating(req, res) {
   const { table_id } = res.locals.table;
   const { reservation_id } = res.locals.reservation;
-  updatedTable = await tablesService.updateTable(table_id, reservation_id);
+  updatedTable = await tablesService.updateTableSeating(table_id, reservation_id);
   res.status(200).json({ data: updatedTable });
 }
 
 async function finishedEating(req, res) {
-  const { table_id } = res.locals.table;
-  const finishedTable = await tablesService.finishedEating(table_id);
+  const { table_id, reservation_id } = res.locals.table;
+  const finishedTable = await tablesService.finishedEating(table_id, reservation_id);
   res.status(200).json({ data: finishedTable });
 }
 
@@ -142,10 +153,12 @@ module.exports = {
     hasRequiredPropertiesToUpdate,
     asyncErrorBoundary(tableExists),
     asyncErrorBoundary(reservationExists),
+    reservationIsNotAlreadySeated,
     tableIsEmpty,
     hasSufficientSeats,
     asyncErrorBoundary(updateReservationSeating),
   ],
+
   finishedEating: [
     asyncErrorBoundary(tableExists),
     tableIsOccupied,
