@@ -14,28 +14,24 @@ function ChooseTable() {
 
   console.log(reservation_id);
 
-  // useEffect(loadTableOptions, [reservation_id]);
+  useEffect(loadTableOptions, [reservation_id]);
 
-  // function loadTableOptions() {
-  //   const abortController = new AbortController();
-  //   setError(null);
-  //   listTables(abortController.signal)
-  //     .then(setTables)
-  //     .catch(setError);
-
-  //   readReservation(reservation_id, abortController.signal)
-  //     .then(setReservation)
-  //     .catch(setError);
-
-  //   return () => abortController.abort();
-  // }
-
-  useEffect(() => {
+  function loadTableOptions() {
     const abortController = new AbortController();
     setError(null);
-    listTables().then(setTables).catch(setError);
+    listTables(abortController.signal)
+      .then(setTables)
+      .catch(setError);
+
     return () => abortController.abort();
-  }, []);
+  }
+
+  // useEffect(() => {
+  //   const abortController = new AbortController();
+  //   setError(null);
+  //   listTables().then(setTables).catch(setError);
+  //   return () => abortController.abort();
+  // }, []);
 
   const handleSubmit = (event) => {
     const abortController = new AbortController();
@@ -64,13 +60,13 @@ function ChooseTable() {
   }
 
   const seatingOptions = tables.map((table) => {
-    // const isOccupiedOrTooSmall = (Number(table.capacity) < Number(reservation.people));
+    const isOccupiedOrTooSmall = table.reservation_id ? true : false;
 
     return (
       <option 
         key={table.table_id} 
         value={table.table_id} 
-        // disabled={isOccupiedOrTooSmall}
+        disabled={isOccupiedOrTooSmall}
         >
         {table.table_name} - {table.capacity} seats
       </option>
