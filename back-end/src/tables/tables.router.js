@@ -16,6 +16,7 @@ router
 router
   .route("/:table_id/seat")
   .put(controller.updateReservationSeating)
+  .delete(controller.finishedEating)
   .all(methodNotAllowed);
 
 

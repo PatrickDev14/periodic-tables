@@ -53,6 +53,17 @@ function tableIsEmpty(req, res, next) {
   });
 }
 
+function tableIsOccupied(req, res, next) {
+  const { reservation_id } = res.locals.table;
+  if (reservation_id) {
+    return next();
+  }
+  next({
+    status: 400,
+    message: `The table is not occupied.`
+  });
+}
+
 function hasValidNameLength(req, res, next) {
   const { table_name } = req.body.data;
   if (table_name.length >= 2) {
@@ -106,6 +117,12 @@ async function updateReservationSeating(req, res) {
   res.status(200).json({ data: updatedTable });
 }
 
+async function finishedEating(req, res) {
+  const { table_id } = res.locals.table;
+  const finishedTable = await tablesService.finishedEating(table_id);
+  res.status(200).json({ data: finishedTable });
+}
+
 async function listTablesByName(req, res) {
   res.json({ data: await tablesService.listTablesByName() });
 }
@@ -128,6 +145,11 @@ module.exports = {
     tableIsEmpty,
     hasSufficientSeats,
     asyncErrorBoundary(updateReservationSeating),
+  ],
+  finishedEating: [
+    asyncErrorBoundary(tableExists),
+    tableIsOccupied,
+    asyncErrorBoundary(finishedEating),
   ],
   list: asyncErrorBoundary(listTablesByName),
 }

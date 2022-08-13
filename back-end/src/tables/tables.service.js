@@ -22,6 +22,13 @@ function updateTable(table_id, reservation_id) {
     .then((updatedTable) => updatedTable[0])
 }
 
+function finishedEating(table_id) {
+  return knex("tables")
+    .where({ table_id })
+    .update("reservation_id", null, "*")
+    .then((finishedTable) => finishedTable[0]);
+}
+
 function listTablesByName() {
   return knex("tables")
     .select("*")
@@ -32,5 +39,6 @@ module.exports = {
   create,
   read,
   updateTable,
+  finishedEating,
   listTablesByName,
 }
