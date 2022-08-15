@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { listTables, updateTable } from "../../utils/api";
+import { listTables, updateTableSeating } from "../../utils/api";
 import ErrorAlert from "../ErrorAlert";
 // import TableSeatingOptions from "./TableSeatingOptions";
 
@@ -34,15 +34,15 @@ function ChooseTable() {
   // }, []);
 
   const handleSubmit = (event) => {
-    const abortController = new AbortController();
     event.preventDefault();
+    const abortController = new AbortController();
     setError(null);
     let reservationId = Number(reservation_id);
     // get the selection from the form
     // const tableObject = JSON.parse(formValue);
     console.log(formValue);
 
-    updateTable(formValue, reservationId, abortController.signal)
+    updateTableSeating(formValue, reservationId, abortController.signal)
       .then((response) => {
         const newTables = tables.map((table) => {
           if (table.table_id === response.table_id) {

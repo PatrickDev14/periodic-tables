@@ -142,13 +142,31 @@ export async function listReservations(params, signal) {
  * @returns {Promise<Error|*>}
  *  a promise that resolves to the updated table
  */
-export async function updateTable(table_id, reservation_id, signal) {
+export async function updateTableSeating(table_id, reservation_id, signal) {
   const url = `${API_BASE_URL}/tables/${table_id}/seat`;
   const options = {
   method: "PUT",
   headers,
   body: JSON.stringify({ data: { reservation_id } }),
   signal,
+  };
+  return await fetchJson(url, options);
+}
+
+/** DELETE request to remove reservation_id from a table
+ *
+ * @param table_id
+ * the id of the specified table
+ * @param signal
+ * optional AbortController.signal
+ */
+ export async function finishReservationAtTable(table_id, signal) {
+  const url = `${API_BASE_URL}/tables/${table_id}/seat`;
+  const options = {
+    method: "DELETE",
+    headers,
+    body: JSON.stringify({ data: { table_id } }),
+    signal,
   };
   return await fetchJson(url, options);
 }

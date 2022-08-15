@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react";
 import { listReservations, listTables } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import DisplayReservations from "./DisplayReservations";
-import DisplayTable from "./DisplayTable";
+import DisplayTables from "./DisplayTables";
 import useQuery from "../utils/useQuery";
-//
 import { next, previous, today } from "../utils/date-time";
 import { useHistory, useRouteMatch } from "react-router-dom";
 
@@ -94,18 +93,17 @@ function Dashboard({ date, setDate }) {
             ))}
         </div>
       </div>
-      {/* {JSON.stringify(reservations)} */}
       <div className="container">
         <div className="d-md-flex mb-3">
           <h4 className="mb-0">Tables:</h4>
         </div>
         <div className="row">
-          {tables &&
+          {tables && 
             tables.map((table) => (
               <div className="col-md-4 mb-3" key={table.table_id}>
-                <DisplayTable table={table} />
+                <DisplayTables table={table} />
               </div>
-            ))}
+            ))}        
         </div>
       </div>
     </main>
