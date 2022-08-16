@@ -1,7 +1,6 @@
 const service = require("./reservations.service");
 const hasProperties = require("../errors/hasProperties");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
-// const { as } = require("../db/connection");
 
 // ---- validating properties ---- //
 const REQUIRED_PROPERTIES = [
@@ -18,7 +17,7 @@ const timeFormat = /[0-9]{2}:[0-9]{2}/;
 // ---- VALIDATION MIDDLEWARE ---- //
 
 const hasRequiredCreateProperties = hasProperties(REQUIRED_PROPERTIES);
-let hasRequiredUpdateProperty;
+const hasRequiredUpdateProperties = hasProperties(REQUIRED_PROPERTIES);
 
 async function reservationExists(req, res, next) {
   const { reservation_id } = req.params;
@@ -151,6 +150,12 @@ async function read(req, res) {
   res.json({ data: res.locals.reservation });
 }
 
+async function update(req, res) {
+  const updatedReservation = {...req.body.data};
+  const { reservation_id } = req.params;
+  res.status(200).json({ data: await service.update(reservation_id, updatedReservation)});
+}
+
 async function updateReservationStatus(req, res) {
   const { reservation_id } = res.locals.reservation;
   console.log(req.body.data);
@@ -185,6 +190,17 @@ module.exports = {
   read: [
     asyncErrorBoundary(reservationExists),
     read,
+  ],
+  update: [
+    asyncErrorBoundary(reservationExists),
+    hasRequiredUpdateProperties,
+    hasValidDate,
+    hasValidTime,
+    noSchedulingInPast,
+    noTuesdayScheduling,
+    isDuringBusinessHours,
+    hasValidPeople,
+    asyncErrorBoundary(update),
   ],
   updateReservationStatus: [
     asyncErrorBoundary(reservationExists),
