@@ -161,8 +161,13 @@ async function updateReservationStatus(req, res) {
  
 // LIST HANDLER FOR RESERVATION RESOURCES
 async function list(req, res) {
-  const { date } = req.query;
-  res.json({ data: await service.listByDate(date) });
+  const { date, mobile_number } = req.query;
+  if (date) {
+    res.json({ data: await service.listByDate(date) });
+  }
+  if(mobile_number) {
+    res.json({ data: await service.listByMobileNumber(mobile_number) });
+  }
 }
 
 module.exports = {
