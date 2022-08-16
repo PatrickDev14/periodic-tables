@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-// import { useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { finishReservationAtTable } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 
 function DisplayTables({ table }) {
   const [error, setError] = useState(null);
   const [currentTable, setCurrentTable] = useState(table);
-  // const history = useHistory();
+  const history = useHistory();
 
-  const handleFinish = (event) => {
+  const handleFinishSubmit = (event) => {
     event.preventDefault();
     const abortController = new AbortController();
     setError(null);
@@ -17,7 +17,10 @@ function DisplayTables({ table }) {
       );
     if (confirmFinish) {
       finishReservationAtTable(currentTable.table_id)
-        .then((response) => setCurrentTable(response))
+        .then((response) => {
+          setCurrentTable(response);
+          history.go(0);
+        })
         .catch(setError);
       
       window.location.reload(true);
@@ -38,13 +41,15 @@ function DisplayTables({ table }) {
           {currentTable.reservation_id ? "Occupied" : "Free"}
         </p>
         {currentTable.reservation_id && (
-          <button
-            className="btn btn-danger"
-            data-table-id-finish={currentTable.table_id}
-            onClick={handleFinish}
-          >
-              Finish
-          </button>
+          <form onSubmit={handleFinishSubmit}>
+            <button
+              className="btn btn-danger"
+              data-table-id-finish={currentTable.table_id}
+              type="submit"
+            >
+                Finish
+            </button>
+          </form>
           )}
           <div className="row">
           </div>
