@@ -176,6 +176,8 @@ export async function updateTableSeating(table_id, reservation_id, signal) {
 }
 
 /** DELETE request to remove reservation_id from a table
+ * simultaneously updates the 'status' for that reservation_id to 'finished'
+ * in a knex transaction in /back-end/src/tables/tables.service.js
  *
  * @param table_id
  * the id of the specified table

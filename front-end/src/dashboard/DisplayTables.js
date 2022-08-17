@@ -28,7 +28,7 @@ function DisplayTables({ table }) {
   }
 
   return (
-    <div className="card text-center rounded-pill">
+    <div className="card text-center shadow p-3 mb-5 bg-body rounded rounded-pill">
       <ErrorAlert error={error} />
       <div className="card-body">
         <h5 className="card-title">
