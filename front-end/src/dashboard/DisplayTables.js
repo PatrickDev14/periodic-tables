@@ -10,7 +10,7 @@ function DisplayTables({ table }) {
 
   const handleFinishSubmit = (event) => {
     event.preventDefault();
-    const abortController = new AbortController();
+    // const abortController = new AbortController();
     setError(null);
     const confirmFinish = window.confirm(
       "Is this table ready to seat new guests? This cannot be undone."
@@ -22,11 +22,9 @@ function DisplayTables({ table }) {
           history.go(0);
         })
         .catch(setError);
-      
-      window.location.reload(true);
     }
 
-    return abortController.abort();
+    // return abortController.abort();
   }
 
   return (

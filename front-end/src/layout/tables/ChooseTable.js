@@ -68,7 +68,7 @@ function ChooseTable() {
         value={table.table_id} 
         disabled={isOccupiedOrTooSmall}
         >
-        {table.table_name} - {table.capacity} seats
+        {table.table_name} - {table.capacity}
       </option>
     );
   });
