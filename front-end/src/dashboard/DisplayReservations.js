@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import ErrorAlert from "../layout/ErrorAlert";
 import { updateReservationStatus } from "../utils/api";
 import { formatAsTime, formatAsDate } from "../utils/date-time";
+import "../layout/reservations/Reservation.css";
 
 function DisplayReservations({ reservation }) {
   const history = useHistory();
@@ -46,7 +47,7 @@ function DisplayReservations({ reservation }) {
   }
 
   return (   
-    <div className="card shadow p-3 mb-5 bg-body rounded">
+    <div className="card shadow p-3 mb-5 bg-res rounded">
       <ErrorAlert error={error} />
       <div className="card-body">
         <h4 className="card-title text-center">

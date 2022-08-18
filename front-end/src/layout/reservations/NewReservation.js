@@ -19,7 +19,6 @@ function NewReservation() {
 
   const [formData, setFormData] = useState(defaultFormData);
 
-    // event and click handlers
   const handleChange = (event) => {
     setFormData((reservation) => ({
       ...reservation,
@@ -44,7 +43,7 @@ function NewReservation() {
     <div>
       <ErrorAlert error={error} />
       <h2 className="d-flex my-3 justify-content-center">
-        Enter a new reservation
+        Enter a reservation
       </h2>
       <div>
         <ReservationForm 

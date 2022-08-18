@@ -15,7 +15,6 @@ function NewTable() {
 
   const [formData, setFormData] = useState(defaultFormData);
 
-    // event and click handlers
   const handleChange = (event) => {
     setFormData((table) => ({
       ...table,
@@ -32,7 +31,7 @@ function NewTable() {
     table.capacity = Number(table.capacity);
 
     createTable(table)
-      .then(() => history.push(`/dashboard`)) // formData instead?
+      .then(() => history.push(`/dashboard`))
       .catch(setError);    
   };
 
@@ -43,7 +42,11 @@ function NewTable() {
         Create a new table
       </h2>
       <div>
-        <TableForm formData={formData} handleChange={handleChange} handleSubmit={handleSubmit} />    
+        <TableForm 
+          formData={formData} 
+          handleChange={handleChange} 
+          handleSubmit={handleSubmit} 
+        />    
       </div>
     </div>
     

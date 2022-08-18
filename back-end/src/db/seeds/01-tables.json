@@ -8,6 +8,10 @@
     "capacity": 6
   },
   {
+    "table_name": "#3",
+    "capacity": 6
+  },
+  {
     "table_name": "Bar #1",
     "capacity": 1
   },

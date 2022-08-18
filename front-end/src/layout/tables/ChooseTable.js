@@ -6,12 +6,9 @@ import ErrorAlert from "../ErrorAlert";
 function ChooseTable() {
   const [tables, setTables] = useState([]);
   const [error, setError] = useState(null);
-  // const [reservation, setReservation] = useState();
   const [formValue, setFormValue] = useState();
   const { reservation_id } = useParams();
   const history = useHistory();
-
-  console.log(reservation_id);
 
   useEffect(loadTableOptions, [reservation_id]);
 

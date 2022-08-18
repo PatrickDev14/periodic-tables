@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { finishReservationAtTable } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
+import "../layout/tables/Table.css";
 
 function DisplayTables({ table }) {
   const [error, setError] = useState(null);
@@ -10,7 +11,6 @@ function DisplayTables({ table }) {
 
   const handleFinishSubmit = (event) => {
     event.preventDefault();
-    // const abortController = new AbortController();
     setError(null);
     const confirmFinish = window.confirm(
       "Is this table ready to seat new guests? This cannot be undone."
@@ -23,12 +23,10 @@ function DisplayTables({ table }) {
         })
         .catch(setError);
     }
-
-    // return abortController.abort();
   }
 
   return (
-    <div className="card text-center shadow p-3 mb-5 bg-body rounded rounded-pill">
+    <div className="card text-center shadow p-3 mb-5 bg-table rounded rounded-pill">
       <ErrorAlert error={error} />
       <div className="card-body">
         <h5 className="card-title">

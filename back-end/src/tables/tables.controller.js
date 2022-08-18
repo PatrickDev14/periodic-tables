@@ -134,19 +134,6 @@ async function finishedEating(req, res) {
   res.status(200).json({ data: finishedTable });
 }
 
-// async function finishedEating(req, res) {
-//   const table = res.locals.table;
-//   const finishedTable = {
-//     ...table,
-//     reservation_id: null,
-//   };
-//   reservationService.updateStatus(table.reservation_id, "finished");
-//   service
-//     .update(finishedTable)
-//     .then((data) => res.json({ data }))
-//     .catch(next);
-// }
-
 async function listTablesByName(req, res) {
   res.json({ data: await tablesService.listTablesByName() });
 }

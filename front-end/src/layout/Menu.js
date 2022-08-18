@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Link } from "react-router-dom";
+import "./Menu.css";
 
 /**
  * Defines the menu for this application.
@@ -10,7 +11,7 @@ import { Link } from "react-router-dom";
 
 function Menu() {
   return (
-    <nav className="navbar navbar-dark align-items-start p-0">
+    <nav className="navbar navbar-dark bg-menu align-items-start p-0">
       <div className="container-fluid d-flex flex-column p-0">
         <Link
           className="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0"

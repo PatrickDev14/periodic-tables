@@ -53,7 +53,7 @@ function Dashboard({ date, setDate }) {
 
   return (
     <main>
-      <h1 className="m-3">Dashboard</h1>
+      <h1 className="justify-content-center m-3">Dashboard</h1>
       <div className="d-flex justify-content-sm-around m-3">
         <button 
           className="btn btn-light btn-lg"

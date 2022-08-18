@@ -93,7 +93,6 @@ function isDuringBusinessHours(req, res, next) {
   });
 }
 
-// the people property must be an integer greater than 0
 function hasValidPeople(req, res, next) {
   const people = req.body.data.people;
   if (Number.isInteger(people) && people > 0) {
@@ -140,7 +139,6 @@ function statusIsNotUnknown(req, res, next) {
 
 // ---- CRUD FUNCTIONS ---- //
 
-// CREATE HANDLER FOR NEW RESERVATIONS
 async function create(req, res) {
   const reservation = await service.create(req.body.data);
   res.status(201).json({ data: reservation });
@@ -163,7 +161,6 @@ async function updateReservationStatus(req, res) {
   res.status(200).json({ data: updatedReservation });
 }
  
-// LIST HANDLER FOR RESERVATION RESOURCES
 async function list(req, res) {
   const { date, mobile_number } = req.query;
   if (date) {

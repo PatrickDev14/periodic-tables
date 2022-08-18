@@ -33,7 +33,6 @@ function EditReservation() {
     return () => abortController.abort();
   }
 
-    // event and click handlers
   const handleChange = (event) => {
     setFormData((reservation) => ({
       ...reservation,
