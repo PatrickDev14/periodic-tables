@@ -1,12 +1,13 @@
-import React, { useState } from "react";
-import { useHistory} from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useHistory, useParams } from "react-router-dom";
 import ErrorAlert from "../ErrorAlert";
 import ReservationForm from "./ReservationForm";
-import { createReservation } from "../../utils/api";
+import { readReservation, updateReservation } from "../../utils/api";
 
-function NewReservation() {
+function EditReservation() {
   const history = useHistory();
   const [error, setError] = useState(null);
+  const { reservation_id } = useParams();
 
   const defaultFormData = {
     first_name: "",
@@ -15,9 +16,22 @@ function NewReservation() {
     reservation_date: "",
     reservation_time: "",
     people: "",
+    status: "booked"
   }
 
   const [formData, setFormData] = useState(defaultFormData);
+
+  useEffect(loadReservation, [reservation_id]);
+
+  function loadReservation() {
+    const abortController = new AbortController();
+    setError(null);
+    readReservation(reservation_id, abortController.signal)
+      .then(setFormData)
+      .catch(setError);
+
+    return () => abortController.abort();
+  }
 
     // event and click handlers
   const handleChange = (event) => {
@@ -30,21 +44,21 @@ function NewReservation() {
   const handleSubmit = (event) => {
     event.preventDefault();
     setError(null);
-    const reservation = {
+    const updatedReservation = {
       ...formData
     };
-    reservation.people = Number(reservation.people);
+    updatedReservation.people = Number(updatedReservation.people);
 
-    createReservation(reservation)
-      .then(() => history.push(`/dashboard?date=${formData.reservation_date}`)) // formData instead?
-      .catch(setError);    
+    updateReservation(updatedReservation, reservation_id)
+      .then(() => history.push(`/dashboard?date=${formData.reservation_date}`))
+      .catch(setError);
   };
 
   return (
     <div>
       <ErrorAlert error={error} />
       <h2 className="d-flex my-3 justify-content-center">
-        Enter a new reservation
+        Edit the reservation
       </h2>
       <div>
         <ReservationForm 
@@ -58,4 +72,4 @@ function NewReservation() {
   )
 }
 
-export default NewReservation;
+  export default EditReservation;

@@ -25,7 +25,6 @@ function Dashboard({ date, setDate }) {
   useEffect(() => {
     function updateDate() {
       const queryDate = query.get("date");
-      console.log(queryDate);
       if (queryDate) {
         setDate(queryDate);
       } else {
@@ -54,7 +53,7 @@ function Dashboard({ date, setDate }) {
 
   return (
     <main>
-      <h1>Dashboard</h1>
+      <h1 className="m-3">Dashboard</h1>
       <div className="d-flex justify-content-sm-around m-3">
         <button 
           className="btn btn-light btn-lg"
@@ -84,23 +83,23 @@ function Dashboard({ date, setDate }) {
         <div className="d-md-flex mb-3">
           <h4 className="mb-0">Reservations for {date}</h4>
         </div>
-        <div className="row">
+        <div style={{ display: "flex", flex: "1", flexWrap: "wrap" }}>
           {reservations &&
             reservations.map((reservation) => (
-              <div className="col-md-4 mb-3" key={reservation.reservation_id}>
+              <div className="m-2 p-1" key={reservation.reservation_id}>
                 <DisplayReservations reservation={reservation} />
               </div>
             ))}
         </div>
       </div>
       <div className="container">
-        <div className="d-md-flex mb-3">
+        <div className="d-md-flex">
           <h4 className="mb-0">Tables:</h4>
         </div>
-        <div className="row">
+        <div style={{ display: "flex", flex: "1", flexWrap: "wrap" }}>
           {tables && 
             tables.map((table) => (
-              <div className="col-md-4 mb-3" key={table.table_id}>
+              <div className="m-2 p-1" key={table.table_id}>
                 <DisplayTables table={table} />
               </div>
             ))}        

@@ -49,8 +49,6 @@ function DisplayTables({ table }) {
             </button>
           </form>
           )}
-          <div className="row">
-          </div>
       </div>
     </div>
   );

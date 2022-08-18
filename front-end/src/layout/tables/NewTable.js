@@ -39,7 +39,7 @@ function NewTable() {
   return (
     <div>
       <ErrorAlert error={error} />
-      <h2 className="d-flex m3 justify-content-center">
+      <h2 className="d-flex my-3 justify-content-center">
         Create a new table
       </h2>
       <div>

@@ -91,6 +91,28 @@ async function fetchJson(url, options, onCancel) {
     .then(formatReservationTime);
 }
 
+/** PUT an update to a reservation in the database
+ *
+ * @param data
+ * the data to update the reservation
+ * @param reservationId
+ *  the id of the desired reservation
+ * @param signal
+ *  optional AbortController.signal
+ * @returns {Promise<reservation>}
+ *  a promise that resolves the saved reservation
+ */
+ export async function updateReservation(data, reservation_id, signal) {
+  const url = `${API_BASE_URL}/reservations/${reservation_id}`;
+  const options = {
+    method: "PUT",
+    headers,
+    body: JSON.stringify({ data }),
+    signal,
+  };
+  return await fetchJson(url, options);
+}
+
 /** PUT an update to a reservation's status in the database
  *
  * @param data

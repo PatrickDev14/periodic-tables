@@ -8,6 +8,7 @@ import NewTable from "./tables/NewTable";
 import ChooseTable from "./tables/ChooseTable";
 import Search from "./reservations/Search";
 import { today } from "../utils/date-time";
+import EditReservation from "./reservations/EditReservation";
 
 /**
  * Defines all the routes for the application.
@@ -31,6 +32,9 @@ function Routes() {
       </Route>
       <Route path="/reservations/:reservation_id/seat">
         <ChooseTable />
+      </Route>
+      <Route path="/reservations/:reservation_id/edit">
+        <EditReservation />
       </Route>
       <Route path="/tables/new">
         <NewTable />

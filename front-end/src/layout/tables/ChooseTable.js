@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { listTables, updateTableSeating } from "../../utils/api";
 import ErrorAlert from "../ErrorAlert";
-// import TableSeatingOptions from "./TableSeatingOptions";
 
 function ChooseTable() {
   const [tables, setTables] = useState([]);
@@ -26,21 +25,11 @@ function ChooseTable() {
     return () => abortController.abort();
   }
 
-  // useEffect(() => {
-  //   const abortController = new AbortController();
-  //   setError(null);
-  //   listTables().then(setTables).catch(setError);
-  //   return () => abortController.abort();
-  // }, []);
-
   const handleSubmit = (event) => {
     event.preventDefault();
     const abortController = new AbortController();
     setError(null);
     let reservationId = Number(reservation_id);
-    // get the selection from the form
-    // const tableObject = JSON.parse(formValue);
-    console.log(formValue);
 
     updateTableSeating(formValue, reservationId, abortController.signal)
       .then((response) => {
@@ -60,13 +49,13 @@ function ChooseTable() {
   }
 
   const seatingOptions = tables.map((table) => {
-    const isOccupiedOrTooSmall = table.reservation_id ? true : false;
+    const isOccupied = table.reservation_id ? true : false;
 
     return (
       <option 
         key={table.table_id} 
         value={table.table_id} 
-        disabled={isOccupiedOrTooSmall}
+        disabled={isOccupied}
         >
         {table.table_name} - {table.capacity}
       </option>
@@ -88,13 +77,11 @@ function ChooseTable() {
               className="form-control"
               name="table_id"
               onChange={(event) => setFormValue(event.target.value)}
-              style={{ width: "40%" }}
+              style={{ width: "70%" }}
               required
             >
               <option value="" >--Please Choose a Table--</option>
               {tables && seatingOptions}
-              {/* <TableSeatingOptions tables={tables} reservation={reservation} /> */}
-
             </select>
           </div>
           <div className="d-flex m-3">

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import DisplayReservations from "../../dashboard/DisplayReservations";
-// import { useHistory, useParams } from "react-router-dom";
 import { listReservations } from "../../utils/api";
 import ErrorAlert from "../ErrorAlert";
 
@@ -9,10 +8,6 @@ function Search() {
   const [mobile_number, setMobile_number] = useState("");
   const [notFound, setNotFound] = useState(false);
   const [error, setError] = useState(null);
-  // display a searchbox, use class form control
-  // display a find button next to searchbox, so <div class row
-  // use event.value as query of mobile number for GET
-  // display reservations with DisplayReservations, that match the mobile phone value
 
   const handleSearchSubmit = (event) => {
     event.preventDefault();
@@ -38,7 +33,7 @@ function Search() {
           <div className="alert alert-danger m-2">No reservations found</div>
         )}
       </div>
-      <h2 className="d-flex m3 justify-content-center">
+      <h2 className="d-flex my-3 justify-content-center">
           Search reservations
       </h2>
       <ErrorAlert error={error} />
