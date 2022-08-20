@@ -53,7 +53,7 @@ function Dashboard({ date, setDate }) {
 
   return (
     <main>
-      <h1 className="justify-content-center m-3">Dashboard</h1>
+      <h1 className="d-flex justify-content-center my-3">Dashboard</h1>
       <div className="d-flex justify-content-sm-around m-3">
         <button 
           className="btn btn-light btn-lg"
@@ -99,7 +99,7 @@ function Dashboard({ date, setDate }) {
         <div style={{ display: "flex", flex: "1", flexWrap: "wrap" }}>
           {tables && 
             tables.map((table) => (
-              <div className="m-2 p-1" key={table.table_id}>
+              <div className="col-sm-4 m-2 p-1" key={table.table_id}>
                 <DisplayTables table={table} />
               </div>
             ))}        

@@ -39,6 +39,8 @@ function ReservationForm({ formData, handleChange, handleSubmit }) {
           className="form-control"
           name="mobile_number" 
           id="mobile_number"
+          pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+          placeholder="xxx-xxx-xxxx"
           style={{ width: "100%" }}
           value={formData.mobile_number ? formData.mobile_number : ""}
           onChange={handleChange}
