@@ -16,7 +16,8 @@ The PostgreSQL Database is hosted by [ElephantSql](https://www.elephantsql.com/)
 
 ## General Information
 
-Periodic tables is a restaurant reservation scheduler and management system. Users are able to add new reservations to specific future dates & times, as well as edit, cancel, and manage that reservation. Users are also able to add new tables with specified capacity to the reservation system. The project's base code and assignments can be viewed on this GitHub repository: https://github.com/Thinkful-Ed/starter-restaurant-reservation
+Periodic tables is a restaurant reservation scheduler and management system. Users are able to add new reservations to specific future dates & times, as well as edit, cancel, and manage that reservation. Users are also able to add new tables with specified capacity to the reservation system. The application layout was designed with a mobile-first approach.
+The project's base code and assignments can be viewed on this GitHub repository: https://github.com/Thinkful-Ed/starter-restaurant-reservation
 
 
 ## Technologies
@@ -54,7 +55,7 @@ Reservations are managed on the dashboard. By default, the dashboard will list r
 
 Tables and their availability are listed below the day's reservations.
 
-![reservation dashboard](https://i.imgur.com/VnhBSQp.png)
+![reservation dashboard](https://i.imgur.com/W5nuoZG.png)
 
 When a user clicks the `Seat` button associated with a reservation, they are taken to the page for seating reservations. There they can choose which table they would like to seat the reservation, or cancel and return to the previous page in history.
 > **Note** Tables with a capacity smaller than a reservation's party size will return an error from the server. Tables that are already occupied by another party are disabled in the selectable options.

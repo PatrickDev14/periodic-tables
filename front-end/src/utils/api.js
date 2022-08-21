@@ -5,6 +5,9 @@
 import formatReservationDate from "./format-reservation-date";
 import formatReservationTime from "./format-reservation-date";
 
+/**
+ * To run tests on the development environment, assign the logic from line 12 to the 'const API_BASE_URL' in line 11
+ */
 const API_BASE_URL = "https://periodictables-pd14-backend.herokuapp.com"
   // process.env.REACT_APP_API_BASE_URL || "http://localhost:5001";
 

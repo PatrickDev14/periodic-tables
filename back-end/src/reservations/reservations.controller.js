@@ -32,6 +32,19 @@ async function reservationExists(req, res, next) {
   });
 }
 
+function hasValidMobileNumber(req, res, next) {
+  const { mobile_number } = req.body.data;
+  const regex = /^\d{3}(-|\s)\d{3}(-|\s)\d{4}$|^\d{10}$|^1\s\d{3}(-|\s)\d{3}(-|\s)\d{4}$|^(1\s?)?\(\d{3}\)(\s|\-)?\d{3}\-\d{4}$/;
+  const valid = mobile_number.match(regex);
+  if (valid) {
+    return next();
+  }
+  next({
+    status: 400,
+    message: `Please enter a valid phone number.`,
+  });
+}
+
 function hasValidDate(req, res, next) {
   const { reservation_date }  = req.body.data;
   const valid = Date.parse(reservation_date);
@@ -57,16 +70,16 @@ function hasValidTime(req, res, next) {
 
 function noSchedulingInPast(req, res, next) {
   const { reservation_date, reservation_time } = req.body.data;
-  const requestedDate = new Date(
+  const presentDate = Date.now();
+  const newReservationDate = new Date(
     `${reservation_date} ${reservation_time}`
   ).valueOf();
-  const presentTime = Date.now();
-  if (requestedDate > presentTime) {
+  if (newReservationDate > presentDate) {
     return next();
   }
   next({
     status: 400,
-    message: `A new reservation must be later today, or on a future date.`
+    message: `A new reservation must later today, or on a future date.`
   });
 }
 
@@ -84,7 +97,10 @@ function noTuesdayScheduling(req, res, next) {
 
 function isDuringBusinessHours(req, res, next) {
   const { reservation_time } = req.body.data;
-  if (reservation_time >= "10:30" && reservation_time <= "21:30") {
+  const hours = Number(reservation_time.slice(0, 2));
+  const minutes = Number(reservation_time.slice(3, 5));
+  const clockTime = hours * 100 + minutes;
+  if (clockTime > 1030 && clockTime < 2130) {
     return next();
   }
   next({
@@ -174,6 +190,7 @@ async function list(req, res) {
 module.exports = {
   create: [
     hasRequiredCreateProperties,
+    hasValidMobileNumber,
     hasValidDate,
     hasValidTime,
     noSchedulingInPast,
@@ -190,6 +207,7 @@ module.exports = {
   update: [
     asyncErrorBoundary(reservationExists),
     hasRequiredUpdateProperties,
+    hasValidMobileNumber,
     hasValidDate,
     hasValidTime,
     noSchedulingInPast,
